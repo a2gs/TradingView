@@ -1,0 +1,19 @@
+study("EMA Cross", overlay = true, precision = 3)
+
+src = close
+fastInput = input(9, title = "Fast EMA")
+offsetfast = input(title = "Offset", defval = 0, minval = -500, maxval = 500)
+slowInput = input(21, title = "Slow EMA")
+offsetslow = input(title = "Offset", defval = 0, minval = -500, maxval = 500)
+
+bothEMAs = input(title = "Show Both EMAs", defval = false)
+
+fastEMA = ema(src, fastInput)
+slowEMA = ema(src, slowInput)
+baseEMA = (fastEMA + slowEMA) / 2
+
+emaColor = fastEMA > slowEMA ? color(green, 0) : fastEMA < slowEMA ? color(red, 0) : yellow
+
+plot(bothEMAs ? na : baseEMA, color = emaColor, linewidth = 3, title = "EMA Cross")
+plot(bothEMAs ? fastEMA : na, title = "Fast EMA", offset = offsetfast, color = red, linewidth = 1)
+plot(bothEMAs ? slowEMA : na, title = "Slow EMA", offset = offsetslow, color = blue, linewidth = 1)
